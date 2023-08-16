@@ -1,13 +1,15 @@
 import { InferSchemaType, Schema, model } from "mongoose";
 
 const productSchema = new Schema({
-    name: { type: String, required: true },
-    brand: { type: String, },
-    color: { type: String },
-    size: { type: Array, default: [] },
-    quantity: { type: Number,  default: 0},
-    description: { type: String, required: true },
-    price: { type: Number, required: true}
+    title: { type: String, required: true },
+    price: { type: Number, required: true},
+    description: { type: String},
+    category: { type: String, },
+    image: { type: String },
+    rating: {
+        rate: {type: Number},
+        count: {type: Number}
+    }
 });
 
 type Product = InferSchemaType<typeof productSchema>;

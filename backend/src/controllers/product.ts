@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import ProductModel from "../models/product";
 import createHttpError from "http-errors";
+import mongoose from "mongoose";
 
 export const getProducts: RequestHandler = async (req, res, next) => {
     try {
@@ -12,32 +13,29 @@ export const getProducts: RequestHandler = async (req, res, next) => {
 }
 
 interface CreateProductBody {
-    name?: string,
-    brand?: string,
-    color?: string,
-    size?: string,
-    quantity?: number,
+    title: string,
+    price: number,
     description?: string,
-    price?: number
+    category?: string,
+    image?: string,
+    rating: {
+        rate?: number,
+        count?: number
+    }
 }
 
 export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, unknown> = async(req, res, next) => {
-    const name = req.body.name;
-    const brand = req.body.brand;
-    const color = req.body.color;
-    const size = req.body.size;
-    const quantity = req.body.quantity;
-    const description = req.body.description;
+    const title = req.body.title;
     const price = req.body.price;
+    const description = req.body.description;
+    const category = req.body.category;
+    const image = req.body.image;
+    const rating = req.body.rating;
 
     try {
         
-        if(!name){
+        if(!title){
             throw createHttpError(400, "Product must have a name")
-        }
-
-        if(!description){
-            throw createHttpError(400, "Product must have a description")
         }
 
         if(!price){
@@ -45,16 +43,126 @@ export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, 
         }
 
         const newProduct = await ProductModel.create({
-            name: name,
-            brand: brand,
-            color: color,
-            size: size,
-            quantity: quantity,
+            title: title,
+            price: price,
             description: description,
-            price: price
+            category: category,
+            image: image,
+            rating: rating
         })
 
         res.status(200).json(newProduct)
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+interface CreateMultipleProductBody {
+    [index: number] : {
+        title: string,
+        price: number,
+        description?: string,
+        category?: string,
+        image?: string,
+        rating: {
+            rate?: number,
+            count?: number
+        }
+    }
+}
+
+export const CreateMultipleProduct: RequestHandler<unknown, unknown, CreateMultipleProductBody, unknown> = async(req, res, next) => {
+
+    try {
+        const newMultipleProduct = await ProductModel.insertMany(req.body)
+
+        res.status(200).json(newMultipleProduct)
+
+    } catch (error) {
+        next(error)
+    }
+
+}
+
+interface UpdateProductParams {
+    productId: string
+}
+
+interface UpdateProductBody {
+    title: string,
+    price: number,
+    description?: string,
+    category?: string,
+    image?: string,
+    rating: {
+        rate?: number,
+        count?: number
+    }
+}
+
+export const UpdateProduct: RequestHandler<UpdateProductParams, unknown, UpdateProductBody, unknown> =async (req, res, next) => {
+    const productId = req.params.productId;
+    const title = req.body.title;
+    const price = req.body.price;
+    const description = req.body.description;
+    const category = req.body.category;
+    const image = req.body.image;
+    const rating = req.body.rating;
+
+    try {
+        if(!mongoose.isValidObjectId(productId)){
+            throw createHttpError(400, "Invalid Product Id")
+        }
+    
+        if(!title){
+            throw createHttpError(400, "Product must have a title")
+        }
+    
+        if(!price){
+            throw createHttpError(400, "Product must have a price")
+        }
+    
+        const product = await ProductModel.findById(productId).exec();
+    
+        if(!product){
+            throw createHttpError(404,"Product not found");
+        }
+    
+        product.title = title;
+        product.price = price;
+        product.description = description;
+        product.category = category;
+        product.image = image;
+        product.rating = rating;
+    
+        const updateProduct = await product.save();
+    
+        res.status(200).json(updateProduct)
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const DeleteProduct: RequestHandler = async (req, res, next) => {
+    const productId = req.params.productId;
+
+    try {
+
+        if(!mongoose.isValidObjectId(productId)){
+            throw createHttpError(400, "Invalid Product Id")
+        }
+        
+        const product = await ProductModel.findById(productId).exec();
+
+        if(!product){
+            throw createHttpError(404, "Product not found")
+        }
+
+        await product.deleteOne();
+
+        res.status(204);
 
     } catch (error) {
         next(error)
