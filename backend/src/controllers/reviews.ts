@@ -5,18 +5,9 @@ import createHttpError from "http-errors";
 
 export const getReviews: RequestHandler = async (req, res, next) => {
 
-    const productId = req.body.productId;
-
     try {
-
-        if(!mongoose.isValidObjectId(productId)){
-            throw createHttpError(400, "Invalid product id");
-        }
-
-        const reviews = await ReviewModel.find({productId: productId}).exec();
-
-        res.status(200).json(reviews)
-
+        const reviews = await ReviewModel.find().exec();
+        res.status(200).json(reviews);
     } catch (error) {
         next(error)
     }
@@ -55,4 +46,30 @@ export const createReview: RequestHandler<unknown, unknown, CreateReviewBody, un
     } catch (error) {
         next(error)
     }
+}
+
+
+export const deleteReview: RequestHandler = async (req, res, next) => {
+    const reviewId = req.params.reviewId;
+
+    try {
+        
+        if(!mongoose.isValidObjectId(reviewId)){
+            throw createHttpError(400, "Invalid Review Id")
+        }
+
+        const review = await ReviewModel.findById(reviewId).exec();
+
+        if(!review){
+            throw createHttpError(404, "Review not found")
+        }
+
+        await review.deleteOne();
+
+        res.status(200).json('Review successfully deleted');
+
+    } catch (error) {
+        next(error)
+    }
+
 }

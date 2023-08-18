@@ -72,7 +72,7 @@ interface CreateMultipleProductBody {
     }
 }
 
-export const CreateMultipleProduct: RequestHandler<unknown, unknown, CreateMultipleProductBody, unknown> = async(req, res, next) => {
+export const createMultipleProduct: RequestHandler<unknown, unknown, CreateMultipleProductBody, unknown> = async(req, res, next) => {
 
     try {
         const newMultipleProduct = await ProductModel.insertMany(req.body)
@@ -101,7 +101,7 @@ interface UpdateProductBody {
     }
 }
 
-export const UpdateProduct: RequestHandler<UpdateProductParams, unknown, UpdateProductBody, unknown> =async (req, res, next) => {
+export const updateProduct: RequestHandler<UpdateProductParams, unknown, UpdateProductBody, unknown> = async (req, res, next) => {
     const productId = req.params.productId;
     const title = req.body.title;
     const price = req.body.price;
@@ -145,7 +145,7 @@ export const UpdateProduct: RequestHandler<UpdateProductParams, unknown, UpdateP
     }
 }
 
-export const DeleteProduct: RequestHandler = async (req, res, next) => {
+export const deleteProduct: RequestHandler = async (req, res, next) => {
     const productId = req.params.productId;
 
     try {
@@ -162,7 +162,7 @@ export const DeleteProduct: RequestHandler = async (req, res, next) => {
 
         await product.deleteOne();
 
-        res.status(204);
+        res.status(200).json("Product successfully deleted");
 
     } catch (error) {
         next(error)

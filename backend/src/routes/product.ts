@@ -7,11 +7,11 @@ router.get("/", ProductController.getProducts);
 
 router.post("/", ProductController.createProduct);
 
-router.patch('/:productId', ProductController.UpdateProduct);
+router.patch('/:productId', ProductController.updateProduct);
 
-router.delete('/:productId', ProductController.DeleteProduct);
+router.delete('/:productId', ProductController.deleteProduct);
 
 //this api is to insert multiple product at once
-router.post("/multipleProduct/", ProductController.CreateMultipleProduct);
+router.post("/multipleProduct/", ProductController.createMultipleProduct);
 
 export default router;

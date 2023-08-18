@@ -7,4 +7,6 @@ router.get("/", ReviewController.getReviews);
 
 router.post("/", ReviewController.createReview);
 
+router.delete("/:reviewId", ReviewController.deleteReview);
+
 export default router;
