@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import productsRoutes from "./routes/product";
 import reviewRoutes from "./routes/reviews";
 import orderRoutes from './routes/order';
+import userRoutes from "./routes/user";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api/products", productsRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/users", userRoutes);
 
 app.use((req, res, next) => {
     next(createHttpError(404, "Endpoint not found"));
