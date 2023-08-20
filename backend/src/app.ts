@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import productsRoutes from "./routes/product";
-import reviewRouter from "./routes/reviews";
+import reviewRoutes from "./routes/reviews";
 import orderRoutes from './routes/order';
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
@@ -13,7 +13,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/api/products", productsRoutes);
-app.use("/api/reviews", reviewRouter);
+app.use("/api/reviews", reviewRoutes);
 app.use("/api/orders", orderRoutes);
 
 app.use((req, res, next) => {
