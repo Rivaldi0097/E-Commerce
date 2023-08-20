@@ -21,13 +21,13 @@ interface CreateReviewBody {
 
 export const createReview: RequestHandler<unknown, unknown, CreateReviewBody, unknown> = async (req,res, next) => {
     
-    const proudctId = req.body.productId;
+    const productId = req.body.productId;
     const description = req.body.description;
     const rating = req.body.rating;
 
     try {
         
-        if(!proudctId){
+        if(!productId){
             throw createHttpError(400, "Review must have a product id");
         }
 
@@ -36,7 +36,7 @@ export const createReview: RequestHandler<unknown, unknown, CreateReviewBody, un
         }
 
         const newReview = await ReviewModel.create({
-            productId: proudctId,
+            productId: productId,
             description: description,
             rating: rating
         })
