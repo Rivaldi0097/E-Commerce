@@ -1,5 +1,7 @@
 import { RequestHandler } from "express";
 import UserModel from "../models/user";
+import bcrypt from "bcrypt";
+import createHttpError from "http-errors";
 
 export const getUser: RequestHandler = async (req, res, next) => {
   const username = req.params.username;
@@ -33,21 +35,47 @@ export const createUser: RequestHandler<
   CreateUserBody,
   unknown
 > = async (req, res, next) => {
-  const data = req.body;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const username = req.body.username;
+  const password = req.body.password;
+  const email = req.body.email;
+  const street = req.body.address.street;
+  const phoneNum = req.body.phoneNum;
+  const city = req.body.address.city;
+  const state = req.body.address.state;
+  const zip = req.body.address.zip;
 
   try {
+    if (
+      !firstName ||
+      !lastName ||
+      !username ||
+      !password ||
+      !email ||
+      !street ||
+      !phoneNum ||
+      !city ||
+      !state ||
+      !zip
+    ) {
+      throw createHttpError(400, "Missing parameters!");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = await UserModel.create({
-      firstName: data.firstName,
-      lastName: data.lastName,
-      username: data.username,
-      password: data.password,
-      email: data.email,
-      phoneNum: data.phoneNum,
+      firstName: firstName,
+      lastName: lastName,
+      username: username,
+      password: hashedPassword,
+      email: email,
+      phoneNum: phoneNum,
       address: {
-        street: data.address.street,
-        city: data.address.city,
-        state: data.address.state,
-        zip: data.address.zip,
+        street: street,
+        city: city,
+        state: state,
+        zip: zip,
       },
     });
 

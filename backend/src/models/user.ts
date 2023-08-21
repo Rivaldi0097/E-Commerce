@@ -5,14 +5,14 @@ const userSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  email: { type: String, required: true },
-  phoneNum: { type: Number, required: true },
+  password: { type: String, required: true, select: false },
+  email: { type: String, required: true, select: false },
+  phoneNum: { type: Number, required: true, select: false },
   address: {
-    street: { type: String, required: true },
-    city: { type: String, required: true },
-    state: { type: String, required: true },
-    zip: { type: Number, required: true },
+    street: { type: String, required: true, select: false },
+    city: { type: String, required: true, select: false },
+    state: { type: String, required: true, select: false },
+    zip: { type: Number, required: true, select: false },
   },
 });
 
