@@ -7,7 +7,11 @@ import userRoutes from "./routes/user";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
 
+const cors = require('cors');
 const app = express();
+
+app.use(cors());
+app.options('*', cors());
 
 app.use(morgan("dev"));
 
