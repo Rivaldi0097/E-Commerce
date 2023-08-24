@@ -12,6 +12,15 @@ export const getProducts: RequestHandler = async (req, res, next) => {
     }
 }
 
+export const getProductCategories: RequestHandler = async (req, res, next) => {
+    try {
+        const productCategories = await ProductModel.find().distinct("category")
+        res.status(200).json(productCategories)
+    } catch (error) {
+        next (error)
+    }
+}
+
 interface CreateProductBody {
     title: string,
     price: number,
@@ -168,3 +177,5 @@ export const deleteProduct: RequestHandler = async (req, res, next) => {
         next(error)
     }
 }
+
+
