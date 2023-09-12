@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 import CartModel from "../models/cart";
 import createHttpError from "http-errors";
-import product from "../models/product";
 
 interface CreateCartBody {
   userId: string;
@@ -74,10 +73,6 @@ export const updateCart: RequestHandler<
     if (existCart.length === 0) {
       throw createHttpError(400, "Cart cannot be found");
     }
-
-    console.log("!!!!", existCart);
-    console.log(productId);
-    console.log(quantity);
 
     if (!productId || !quantity) {
       throw createHttpError(400, "Please provide productId and quantity");
@@ -202,6 +197,34 @@ export const updateCart: RequestHandler<
     // }
 
     // res.status(200).json(addProduct);
+  } catch (error) {
+    next(error);
+  }
+};
+
+interface getCartContentParams {
+  userId: string;
+}
+
+export const getCartContent: RequestHandler<
+  getCartContentParams,
+  unknown,
+  unknown,
+  unknown
+> = async (req, res, next) => {
+  try {
+    const cartContent = await CartModel.findOne({ user: req.params.userId })
+      .populate({ path: "user", select: "username" })
+      .populate({ path: "products.product", select: ["title", "price"] })
+      .exec();
+
+    console.log(cartContent);
+
+    if (!cartContent) {
+      throw createHttpError(404, "User does not have cart associated");
+    }
+
+    res.status(200).json(cartContent);
   } catch (error) {
     next(error);
   }
