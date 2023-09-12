@@ -299,6 +299,11 @@ export const removeProductInCart: RequestHandler<
 > = async (req, res, next) => {
   try {
     const productId = req.body.product;
+
+    if (!productId) {
+      throw createHttpError(400, "Please provide id of product to be removed");
+    }
+
     const removeProduct = await CartModel.findOneAndUpdate(
       { _id: req.params.cartId },
       {
@@ -314,6 +319,25 @@ export const removeProductInCart: RequestHandler<
     );
     console.log(removeProduct);
     res.status(200).json(removeProduct);
+  } catch (error) {
+    next(error);
+  }
+};
+
+interface removeCartParams {
+  userId: string;
+}
+
+export const removeCart: RequestHandler<
+  removeCartParams,
+  unknown,
+  unknown,
+  unknown
+> = async (req, res, next) => {
+  try {
+    const cart = await CartModel.deleteOne({ user: req.params.userId });
+    console.log(cart);
+    res.status(200).json("Successfully deleted cart for user");
   } catch (error) {
     next(error);
   }
