@@ -4,16 +4,14 @@ import productsRoutes from "./routes/product";
 import reviewRoutes from "./routes/reviews";
 import orderRoutes from "./routes/order";
 import userRoutes from "./routes/user";
-import cartRoutes from "./routes/cart";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const cors = require("cors");
+const cors = require('cors');
 const app = express();
 
 app.use(cors());
-app.options("*", cors);
+app.options('*', cors());
 
 app.use(morgan("dev"));
 
@@ -23,7 +21,6 @@ app.use("/api/products", productsRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/cart", cartRoutes);
 
 app.use((req, res, next) => {
   next(createHttpError(404, "Endpoint not found"));
