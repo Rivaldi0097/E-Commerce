@@ -54,6 +54,7 @@ interface UpdateCartParams {
 interface UpdateCartBody {
   product: string;
   quantity: number;
+  increase: boolean;
 }
 
 export const updateCart: RequestHandler<
@@ -65,6 +66,7 @@ export const updateCart: RequestHandler<
   try {
     const productId = req.body.product;
     const quantity = req.body.quantity;
+    const increase = req.body.increase;
 
     const existCart = await CartModel.find({
       _id: req.params.cartId,
@@ -83,44 +85,95 @@ export const updateCart: RequestHandler<
       products: { $elemMatch: { product: productId } },
     });
 
-    if (existProduct.length !== 0) {
-      const products = existProduct[0].products;
-      for (const eachProduct of products) {
-        if (String(eachProduct.product) === productId) {
-          const oldQuantity = eachProduct.quantity;
-          const addProduct = await CartModel.findOneAndUpdate(
-            { _id: req.params.cartId },
-            {
-              $set: {
-                "products.$[updateProduct].quantity": oldQuantity
-                  ? oldQuantity + 1
-                  : quantity,
+    if (increase) {
+      // INCREASE PRODUCT QUANTITY IN CART
+      if (existProduct.length !== 0) {
+        const products = existProduct[0].products;
+        for (const eachProduct of products) {
+          if (String(eachProduct.product) === productId) {
+            const oldQuantity = eachProduct.quantity;
+            const increaseQty = await CartModel.findOneAndUpdate(
+              { _id: req.params.cartId },
+              {
+                $set: {
+                  "products.$[updateProduct].quantity": oldQuantity
+                    ? oldQuantity + 1
+                    : quantity,
+                },
               },
-            },
-            {
-              arrayFilters: [{ "updateProduct.product": productId }],
-              returnDocument: "after",
-            }
-          );
-          console.log(addProduct);
-          res.status(200).json(addProduct);
+              {
+                arrayFilters: [{ "updateProduct.product": productId }],
+                returnDocument: "after",
+              }
+            );
+            console.log(increaseQty);
+            res.status(200).json(increaseQty);
+          }
         }
       }
-    } else {
-      const addProduct = await CartModel.findOneAndUpdate(
-        { _id: req.params.cartId },
-        {
-          $push: {
-            products: {
-              product: productId,
-              quantity: quantity,
+      // ADD PRODUCT INTO CART
+      else {
+        const addProduct = await CartModel.findOneAndUpdate(
+          { _id: req.params.cartId },
+          {
+            $push: {
+              products: {
+                product: productId,
+                quantity: quantity,
+              },
             },
           },
-        },
-        { returnDocument: "after" }
-      );
-      console.log(addProduct);
-      res.status(200).json(addProduct);
+          { returnDocument: "after" }
+        );
+        console.log(addProduct);
+        res.status(200).json(addProduct);
+      }
+    } else {
+      if (existProduct.length !== 0) {
+        const products = existProduct[0].products;
+        for (const eachProduct of products) {
+          if (String(eachProduct.product) === productId) {
+            const oldQuantity = eachProduct.quantity;
+            // REMOVE PRODUCT FROM CART
+            if (oldQuantity === 1) {
+              const removeProduct = await CartModel.findOneAndUpdate(
+                { _id: req.params.cartId },
+                {
+                  $pull: {
+                    products: {
+                      product: productId,
+                    },
+                  },
+                },
+                {
+                  returnDocument: "after",
+                }
+              );
+              console.log(removeProduct);
+              res.status(200).json(removeProduct);
+            }
+            // DECREASE PRODUCT QUANTITY IN CART
+            else {
+              const decreaseQty = await CartModel.findOneAndUpdate(
+                { _id: req.params.cartId },
+                {
+                  $set: {
+                    "products.$[updateProduct].quantity": oldQuantity
+                      ? oldQuantity - 1
+                      : quantity,
+                  },
+                },
+                {
+                  arrayFilters: [{ "updateProduct.product": productId }],
+                  returnDocument: "after",
+                }
+              );
+              console.log(decreaseQty);
+              res.status(200).json(decreaseQty);
+            }
+          }
+        }
+      }
     }
 
     // const addProduct = await CartModel.updateOne(
@@ -225,6 +278,42 @@ export const getCartContent: RequestHandler<
     }
 
     res.status(200).json(cartContent);
+  } catch (error) {
+    next(error);
+  }
+};
+
+interface RemoveProductInCart {
+  cartId: string;
+}
+
+interface RemoveProductInCart {
+  product: string;
+}
+
+export const removeProductInCart: RequestHandler<
+  RemoveProductInCart,
+  unknown,
+  RemoveProductInCart,
+  unknown
+> = async (req, res, next) => {
+  try {
+    const productId = req.body.product;
+    const removeProduct = await CartModel.findOneAndUpdate(
+      { _id: req.params.cartId },
+      {
+        $pull: {
+          products: {
+            product: productId,
+          },
+        },
+      },
+      {
+        returnDocument: "after",
+      }
+    );
+    console.log(removeProduct);
+    res.status(200).json(removeProduct);
   } catch (error) {
     next(error);
   }
