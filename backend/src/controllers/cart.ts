@@ -215,7 +215,7 @@ export const getCartContent: RequestHandler<
   try {
     const cartContent = await CartModel.findOne({ user: req.params.userId })
       .populate({ path: "user", select: "username" })
-      .populate({ path: "products.product", select: ["title", "price"] })
+      .populate({ path: "products.product", select: ["title", "price", "image"] })
       .exec();
 
     console.log(cartContent);
