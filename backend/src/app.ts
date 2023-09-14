@@ -7,6 +7,9 @@ import userRoutes from "./routes/user";
 import cartRoutes from "./routes/cart";
 import morgan from "morgan";
 import createHttpError, { isHttpError } from "http-errors";
+import session from "express-session";
+import env from "./util/validateEnv";
+import MongoStore from "connect-mongo";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cors = require("cors");
@@ -18,6 +21,19 @@ app.options("*", cors);
 app.use(morgan("dev"));
 
 app.use(express.json());
+
+app.use(session({
+  secret: env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 60 * 60 * 1000
+  },
+  rolling: true,
+  store: MongoStore.create({
+    mongoUrl: env.MONGO_CONNECTION_STRING
+  })
+}))
 
 app.use("/api/products", productsRoutes);
 app.use("/api/reviews", reviewRoutes);

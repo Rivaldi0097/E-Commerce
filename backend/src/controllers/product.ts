@@ -60,7 +60,7 @@ export const createProduct: RequestHandler<unknown, unknown, CreateProductBody, 
             rating: rating
         })
 
-        res.status(200).json(newProduct)
+        res.status(201).json(newProduct)
 
     } catch (error) {
         next(error)
