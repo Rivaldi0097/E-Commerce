@@ -105,7 +105,12 @@ export const updateCart: RequestHandler<
                 arrayFilters: [{ "updateProduct.product": productId }],
                 returnDocument: "after",
               }
-            );
+            )
+              .populate({ path: "user", select: "username" })
+              .populate({
+                path: "products.product",
+                select: ["title", "price", "image"],
+              });
             console.log(increaseQty);
             res.status(200).json(increaseQty);
           }
@@ -124,7 +129,12 @@ export const updateCart: RequestHandler<
             },
           },
           { returnDocument: "after" }
-        );
+        )
+          .populate({ path: "user", select: "username" })
+          .populate({
+            path: "products.product",
+            select: ["title", "price", "image"],
+          });
         console.log(addProduct);
         res.status(200).json(addProduct);
       }
@@ -148,7 +158,12 @@ export const updateCart: RequestHandler<
                 {
                   returnDocument: "after",
                 }
-              );
+              )
+                .populate({ path: "user", select: "username" })
+                .populate({
+                  path: "products.product",
+                  select: ["title", "price", "image"],
+                });
               console.log(removeProduct);
               res.status(200).json(removeProduct);
             }
@@ -167,7 +182,12 @@ export const updateCart: RequestHandler<
                   arrayFilters: [{ "updateProduct.product": productId }],
                   returnDocument: "after",
                 }
-              );
+              )
+                .populate({ path: "user", select: "username" })
+                .populate({
+                  path: "products.product",
+                  select: ["title", "price", "image"],
+                });
               console.log(decreaseQty);
               res.status(200).json(decreaseQty);
             }
@@ -268,7 +288,10 @@ export const getCartContent: RequestHandler<
   try {
     const cartContent = await CartModel.findOne({ user: req.params.userId })
       .populate({ path: "user", select: "username" })
-      .populate({ path: "products.product", select: ["title", "price", "image"] })
+      .populate({
+        path: "products.product",
+        select: ["title", "price", "image"],
+      })
       .exec();
 
     console.log(cartContent);
