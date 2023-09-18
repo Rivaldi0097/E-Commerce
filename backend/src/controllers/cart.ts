@@ -339,7 +339,12 @@ export const removeProductInCart: RequestHandler<
       {
         returnDocument: "after",
       }
-    );
+    )
+      .populate({ path: "user", select: "username" })
+      .populate({
+        path: "products.product",
+        select: ["title", "price", "image"],
+      });
     console.log(removeProduct);
     res.status(200).json(removeProduct);
   } catch (error) {
