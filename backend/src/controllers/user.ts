@@ -200,8 +200,6 @@ export const getResetPasswordToken: RequestHandler<unknown, unknown, GetResetPas
       `Please use this link to reset your password http://localhost:3000/forgetPassword/resetPassword?uid=${user._id}&token=${newToken.token}`
     )
 
-    console.log("email result: ", emailResult)
-
     if(!emailResult){
       throw createHttpError(400, "Please try again")
     }
@@ -229,8 +227,6 @@ export const resetPassword: RequestHandler<unknown, unknown, ResetPasswordBody, 
     
     //check if token exist
     const validToken = await TokenModel.find({token: token}).exec();
-
-    console.log(validToken);
 
     if(!validToken){
       throw createHttpError(401, "Token is invalid")
