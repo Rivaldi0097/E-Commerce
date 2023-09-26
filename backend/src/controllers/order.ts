@@ -1,57 +1,74 @@
 import { RequestHandler } from "express";
 import OrderModel from "../models/order";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import createHttpError from "http-errors";
 
-export const getOrders: RequestHandler = async (req, res, next) => {
-
-    try {
-        const orders = await OrderModel.find().exec();
-        res.status(200).json(orders);
-
-    } catch (error) {
-        next(error)
-    }
+interface getOrderParams {
+  userId: string;
 }
 
-interface CreateOrderBody{
-    userId: string,
-    productId: string,
-    quantity: number,
-    address: string,
-    unitNumber: string,
-    postalCode: string,
-    paymentAmount: number
+export const getOrders: RequestHandler<
+  getOrderParams,
+  unknown,
+  unknown,
+  unknown
+> = async (req, res, next) => {
+  try {
+    const orders = await OrderModel.find({ user: req.params.userId })
+      .populate({ path: "user", select: "username" })
+      .populate({
+        path: "products.product",
+        select: ["title", "price", "image"],
+      })
+      .exec();
+    res.status(200).json(orders);
+  } catch (error) {
+    next(error);
+  }
+};
+
+type productType = {
+  product: string;
+  quantity: number;
+};
+
+interface CreateOrderBody {
+  user: string;
+  products: productType[];
+  totalAmount: number;
 }
 
-export const createOrder: RequestHandler<unknown, unknown, CreateOrderBody, unknown> = async (req, res, next) => {
-    const userId = req.body.userId;
-    const productId = req.body.productId;
-    const quantity = req.body.quantity;
-    const address = req.body.address;
-    const unitNumber = req.body.unitNumber;
-    const postalCode = req.body.postalCode;
-    const paymentAmount = req.body.paymentAmount;
+export const createOrder: RequestHandler<
+  unknown,
+  unknown,
+  CreateOrderBody,
+  unknown
+> = async (req, res, next) => {
+  const user = req.body.user;
+  const products = req.body.products;
+  const totalAmount = req.body.totalAmount;
 
-    if(!userId || !productId || !quantity || !address || !unitNumber || !postalCode || !paymentAmount){
-        throw createHttpError(400, "Something is missing, please check again")
+  try {
+    if (!products || products.length === 0) {
+      throw createHttpError(400, "Products must not be empty");
     }
 
-    try {
-        
-        const newOrder = await OrderModel.create({
-            userId: userId,
-            productId: productId,
-            quantity: quantity,
-            address: address,
-            unitNumber: unitNumber,
-            postalCode: postalCode,
-            paymentAmount: paymentAmount
-        })
-    
-        res.status(200).json(newOrder);
-
-    } catch (error) {
-        next(error)
+    if (!totalAmount || totalAmount === 0) {
+      throw createHttpError(400, "Total amount must not be empty or zero");
     }
-}
+
+    if (!user) {
+      throw createHttpError(400, "Order must have a user associated");
+    }
+
+    const newOrder = await OrderModel.create({
+      user: user,
+      products: products,
+      totalAmount: totalAmount,
+    });
+
+    res.status(201).json(newOrder);
+  } catch (error) {
+    next(error);
+  }
+};
