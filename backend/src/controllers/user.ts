@@ -226,7 +226,7 @@ export const resetPassword: RequestHandler<unknown, unknown, ResetPasswordBody, 
   try {
     
     //check if token exist
-    const validToken = await TokenModel.find({token: token}).exec();
+    const validToken = await TokenModel.findOne({token: token}).exec();
 
     if(!validToken){
       throw createHttpError(401, "Token is invalid")
@@ -236,7 +236,7 @@ export const resetPassword: RequestHandler<unknown, unknown, ResetPasswordBody, 
     const user = UserModel.findById(userId);
 
     if(!user){
-      throw createHttpError(404, "User not found!")
+      throw createHttpError(401, "User not found!")
     }
 
     //encrypt and update user password
