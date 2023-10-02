@@ -60,7 +60,17 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
   res.setHeader("Access-Control-Allow-Origin", "localhost:3000");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization");
+  res.setHeader("Access-Control-Allow-Headers", `Access-Control-Allow-Headers, 
+                                                  Origin,
+                                                  Accept,
+                                                  Accept-Encoding,
+                                                  Accept-Language,
+                                                  Referer
+                                                  X-Requested-With, 
+                                                  Content-Type, 
+                                                  Access-Control-Request-Method, 
+                                                  Access-Control-Request-Headers`
+                                                  );
   res.status(statusCode).json({ error: errorMessage });
   
 });
