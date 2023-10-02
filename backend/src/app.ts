@@ -15,9 +15,7 @@ import MongoStore from "connect-mongo";
 const cors = require("cors");
 const app = express();
 
-app.use(cors());
-
-app.options("*", cors());
+// app.use(cors());
 
 app.use(morgan("dev"));
 
@@ -35,6 +33,8 @@ app.use(session({
     mongoUrl: env.MONGO_CONNECTION_STRING
   })
 }))
+
+app.options("*", cors());
 
 app.use("/api/products", productsRoutes);
 app.use("/api/reviews", reviewRoutes);
