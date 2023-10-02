@@ -15,9 +15,7 @@ import MongoStore from "connect-mongo";
 const cors = require("cors");
 const app = express();
 
-app.use(cors({
-  origin: '*'
-}));
+app.use(cors());
 
 app.options("*", cors);
 
@@ -59,7 +57,10 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     statusCode = error.status;
     errorMessage = error.message;
   }
-
+  res.setHeader("Access-Control-Allow-Origin", "localhost:3000");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization");
   res.status(statusCode).json({ error: errorMessage });
   
 });
