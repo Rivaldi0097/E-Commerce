@@ -5,7 +5,7 @@ var app = express();
 const router = express.Router();
 var cors = require("cors");
 
-app.options("*", cors());
+app.options("/login", cors());
 
 router.get("/", UserController.getAuthenticatedUser);
 
