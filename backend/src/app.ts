@@ -16,6 +16,7 @@ const cors = require("cors");
 const app = express();
 
 app.use(cors());
+
 app.options("*", cors);
 
 app.use(morgan("dev"));
@@ -56,7 +57,12 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     statusCode = error.status;
     errorMessage = error.message;
   }
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
   res.status(statusCode).json({ error: errorMessage });
+  
 });
 
 export default app;
