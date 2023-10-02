@@ -62,8 +62,8 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
   res.setHeader("Accept-Language", "en-GB,en-US;q=0.9,en;q=0.8");
   res.setHeader("Referer", "http://localhost:3000/");
   res.setHeader("Origin", "http://localhost:3000");
-  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Request-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
+  res.setHeader("Access-Control-Request-Headers", "Content-Type");
   res.status(statusCode).json({ error: errorMessage });
   
 });
