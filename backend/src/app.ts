@@ -57,6 +57,7 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     statusCode = error.status;
     errorMessage = error.message;
   }
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.status(statusCode).json({ error: errorMessage });
   
 });
