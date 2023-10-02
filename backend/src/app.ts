@@ -65,7 +65,7 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
                                                   Accept,
                                                   Accept-Encoding,
                                                   Accept-Language,
-                                                  Referer
+                                                  Referer,
                                                   X-Requested-With, 
                                                   Content-Type, 
                                                   Access-Control-Request-Method, 
