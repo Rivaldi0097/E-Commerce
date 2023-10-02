@@ -57,23 +57,11 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     statusCode = error.status;
     errorMessage = error.message;
   }
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
-  res.setHeader("Access-Control-Allow-Headers", `Access-Control-Allow-Headers, 
-                                                  Origin,
-                                                  Accept,
-                                                  Accept-Encoding,
-                                                  Accept-Language,
-                                                  Referer,
-                                                  X-Requested-With, 
-                                                  Content-Type, 
-                                                  Access-Control-Request-Method, 
-                                                  Access-Control-Request-Headers,
-                                                  Sec-Fetch-Dest,
-                                                  Sec-Fetch-Mode,
-                                                  Sec-Fetch-Site,
-                                                  User-Agent`
+  res.setHeader("Access-Control-Allow-Headers", ` 
+                                                  Content-Type`
                                                   );
   res.status(statusCode).json({ error: errorMessage });
   
