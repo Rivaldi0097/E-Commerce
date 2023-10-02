@@ -148,7 +148,6 @@ export const login: RequestHandler<
     }
 
     req.session.userId = user._id;
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
     res.status(201).json(user);
   } catch (error) {
     next(error);
