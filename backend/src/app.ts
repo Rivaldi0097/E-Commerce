@@ -15,7 +15,11 @@ import MongoStore from "connect-mongo";
 const cors = require("cors");
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  credentials: true,
+  allowedHeaders: ['Content-Type']
+}));
 
 app.options("*", cors());
 
