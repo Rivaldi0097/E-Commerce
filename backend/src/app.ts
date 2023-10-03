@@ -16,7 +16,7 @@ const cors = require("cors");
 const app = express();
 
 app.use(cors({
-  origin:['http://localhost:3000'],
+  origin:['http://localhost:3000, https://e-commerce-frontend-4kcc69md1-rivaldi0097.vercel.app/'],
   Credentials: true,
   allowedHeaders: ['Content-Type']
 }));
