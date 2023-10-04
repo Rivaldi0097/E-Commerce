@@ -18,7 +18,7 @@ const app = express();
 var whitelist = ['http://localhost:3000', 'https://e-commerce-frontend-rivaldi0097.vercel.app', 'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app']
 
 app.use(cors({
-  origin: whitelist,
+  origin: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
   credentials: true,
   allowedHeaders: ['Content-Type']
 }));
@@ -35,8 +35,6 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     domain: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
-    httpOnly: true,
-    sameSite: false,
     secure:false,
     maxAge: 60 * 60 * 1000
   },
