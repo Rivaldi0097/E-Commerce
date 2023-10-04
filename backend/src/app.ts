@@ -15,8 +15,10 @@ import MongoStore from "connect-mongo";
 const cors = require("cors");
 const app = express();
 
+var whitelist = ['http://localhost:3000', 'https://e-commerce-frontend-rivaldi0097.vercel.app', 'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app']
+
 app.use(cors({
-  origin: '*',
+  origin: whitelist,
   credentials: true,
   allowedHeaders: ['Content-Type']
 }));
