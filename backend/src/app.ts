@@ -19,7 +19,7 @@ const cookieParser = require('cookie-parser')
 var whitelist = ['http://localhost:3000', 'https://e-commerce-frontend-rivaldi0097.vercel.app', 'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app']
 
 app.use(cors({
-  origin: whitelist,
+  origin: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
   credentials: true,
   allowedHeaders: ['Content-Type']
 }));
@@ -30,8 +30,6 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
-app.use(cookieParser())
-app.set('trust proxy', 1) // trust first proxy
 app.use(session({
   secret: env.SESSION_SECRET,
   resave: false,
@@ -40,6 +38,7 @@ app.use(session({
     // domain: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
     sameSite: "none",
     secure: true,
+    httpOnly: false,
     maxAge: 60 * 60 * 1000
   },
   // rolling: true,
