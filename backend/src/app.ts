@@ -25,7 +25,7 @@ var whitelist = [
 app.use(cors({
   origin: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
   credentials: true,
-  // allowedHeaders: ['Content-Type']
+  allowedHeaders: ['Content-Type']
 }));
 
 app.options("*", cors());
