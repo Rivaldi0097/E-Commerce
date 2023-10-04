@@ -39,7 +39,7 @@ app.use(session({
     secure:false,
     maxAge: 60 * 60 * 1000
   },
-  rolling: true,
+  // rolling: true,
   store: MongoStore.create({
     mongoUrl: env.MONGO_CONNECTION_STRING
   })
