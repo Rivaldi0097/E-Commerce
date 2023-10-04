@@ -16,12 +16,16 @@ const cors = require("cors");
 const app = express();
 const cookieParser = require('cookie-parser')
 
-var whitelist = ['http://localhost:3000', 'https://e-commerce-frontend-rivaldi0097.vercel.app', 'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app']
+var whitelist = [
+  'http://localhost:3000', 
+  'https://e-commerce-frontend-rivaldi0097.vercel.app', 
+  'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app'
+]
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
   credentials: true,
-  allowedHeaders: ['Content-Type']
+  // allowedHeaders: ['Content-Type']
 }));
 
 app.options("*", cors());
@@ -29,16 +33,15 @@ app.options("*", cors());
 app.use(morgan("dev"));
 
 app.use(express.json());
-
+app.set("trust proxy", 1);
 app.use(session({
   secret: env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
-    // domain: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
+    // domain: 'http://localhost:3000',
     sameSite: "none",
-    secure: false,
-    httpOnly: false,
+    secure: true,
     maxAge: 60 * 60 * 1000
   },
   // rolling: true,
