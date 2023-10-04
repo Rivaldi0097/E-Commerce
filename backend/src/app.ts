@@ -34,7 +34,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    domain: 'http://localhost:3000',
+    domain: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
     httpOnly: true,
     sameSite: false,
     secure:false,
