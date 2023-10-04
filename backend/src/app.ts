@@ -14,7 +14,6 @@ import MongoStore from "connect-mongo";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cors = require("cors");
 const app = express();
-const cookieParser = require('cookie-parser')
 
 var whitelist = [
   'http://localhost:3000', 
@@ -23,7 +22,7 @@ var whitelist = [
 ]
 
 app.use(cors({
-  origin: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
+  origin: whitelist,
   credentials: true,
   allowedHeaders: ['Content-Type']
 }));
@@ -40,8 +39,8 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     // domain: 'http://localhost:3000',
-    sameSite: "none",
-    secure: true,
+    // sameSite: "none",
+    // secure: true,
     maxAge: 60 * 60 * 1000
   },
   // rolling: true,
