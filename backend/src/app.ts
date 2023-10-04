@@ -34,6 +34,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
+    domain: 'http://localhost:3000',
     httpOnly: true,
     sameSite: false,
     secure:false,
