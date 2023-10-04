@@ -19,7 +19,7 @@ const cookieParser = require('cookie-parser')
 var whitelist = ['http://localhost:3000', 'https://e-commerce-frontend-rivaldi0097.vercel.app', 'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app']
 
 app.use(cors({
-  origin: whitelist,
+  origin: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
   credentials: true,
   allowedHeaders: ['Content-Type']
 }));
