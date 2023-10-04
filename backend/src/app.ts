@@ -14,6 +14,7 @@ import MongoStore from "connect-mongo";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cors = require("cors");
 const app = express();
+const cookieParser = require('cookie-parser')
 
 var whitelist = ['http://localhost:3000', 'https://e-commerce-frontend-rivaldi0097.vercel.app', 'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app']
 
@@ -29,6 +30,7 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
+app.use(cookieParser())
 app.use(session({
   secret: env.SESSION_SECRET,
   resave: false,
