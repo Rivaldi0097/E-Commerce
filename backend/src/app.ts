@@ -22,7 +22,7 @@ var whitelist = [
 ]
 
 app.use(cors({
-  origin: whitelist,
+  origin: '*',
   credentials: true,
   allowedHeaders: ['Content-Type']
 }));
@@ -32,7 +32,7 @@ app.options("*", cors());
 app.use(morgan("dev"));
 
 app.use(express.json());
-app.set("trust proxy", 1);
+// app.set("trust proxy", 1);
 app.use(session({
   secret: env.SESSION_SECRET,
   resave: false,
