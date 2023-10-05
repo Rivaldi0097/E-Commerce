@@ -21,7 +21,7 @@ var whitelist = [
   'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app'
 ]
 
-app.set("trust proxy", 1);
+app.enable("trust proxy");
 
 app.use(cors({
   origin: process.env.ENVIRONMENT === 'development' ? 'http://localhost:3000' : 'https://e-commerce-frontend-rivaldi0097.vercel.app',
@@ -44,6 +44,7 @@ app.use(session({
     // domain: 'http://localhost:3000',
     sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'none',
     secure: process.env.ENVIRONMENT === 'development' ? false : true,
+    httpOnly: process.env.ENVIRONMENT === 'development' ? false : true,
     maxAge: 60 * 60 * 1000
   },
   // rolling: true,
