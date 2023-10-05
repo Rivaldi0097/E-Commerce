@@ -24,7 +24,7 @@ var whitelist = [
 app.use(cors({
   origin: process.env.ENVIRONMENT === 'development' ? 'http://localhost:3000' : 'https://e-commerce-frontend-rivaldi0097.vercel.app',
   credentials: true,
-  allowedHeaders: ['Content-Type']
+  allowedHeaders: ['Content-Type', 'X-Requested-With', 'X-HTTP-Method-Override', 'Accept']
 }));
 
 app.options("*", cors());
@@ -39,9 +39,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    // domain: 'http://localhost:3000',
-    sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'lax',
-    secure: process.env.ENVIRONMENT === 'development' ? false : false,
+    domain: 'https://e-commerce-frontend-rivaldi0097.vercel.app',
+    sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'none',
+    secure: process.env.ENVIRONMENT === 'development' ? false : true,
     maxAge: 60 * 60 * 1000
   },
   // rolling: true,
