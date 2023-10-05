@@ -30,10 +30,10 @@ app.use(cors({
 app.options("*", cors());
 
 app.use(morgan("dev"));
-
+app.set("trust proxy", 1);
 app.use(express.json());
 
-app.set("trust proxy", 1);
+
 app.use(session({
   secret: env.SESSION_SECRET,
   resave: false,
