@@ -40,7 +40,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     // domain: 'http://localhost:3000',
-    sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'none',
+    sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'lax',
     secure: process.env.ENVIRONMENT === 'development' ? false : true,
     maxAge: 60 * 60 * 1000
   },
