@@ -38,10 +38,12 @@ app.use(session({
   secret: env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  name: 'LootSessionCookie',
   cookie: {
     // domain: 'http://localhost:3000',
     sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'none',
     secure: process.env.ENVIRONMENT === 'development' ? false : true,
+    httpOnly: true,
     maxAge: 60 * 60 * 1000
   },
   // rolling: true,
