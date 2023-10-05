@@ -27,7 +27,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'X-Requested-With', 'X-HTTP-Method-Override', 'Accept', 'Cloudfront-forwarded-proto']
 }));
 
-app.options("*", cors());
+// app.options("*", cors());
 
 app.use(morgan("dev"));
 
