@@ -21,7 +21,7 @@ var whitelist = [
   'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app'
 ]
 
-app.enable("trust proxy");
+app.set("trust proxy", 1);
 
 app.use(cors({
   origin: process.env.ENVIRONMENT === 'development' ? 'http://localhost:3000' : 'https://e-commerce-frontend-rivaldi0097.vercel.app',
