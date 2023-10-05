@@ -41,7 +41,7 @@ app.use(session({
   cookie: {
     // domain: 'http://localhost:3000',
     sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'lax',
-    secure: process.env.ENVIRONMENT === 'development' ? false : true,
+    secure: process.env.ENVIRONMENT === 'development' ? false : false,
     maxAge: 60 * 60 * 1000
   },
   // rolling: true,
