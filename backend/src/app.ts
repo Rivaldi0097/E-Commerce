@@ -24,7 +24,7 @@ var whitelist = [
 app.use(cors({
   origin: process.env.ENVIRONMENT === 'development' ? 'http://localhost:3000' : 'https://e-commerce-frontend-rivaldi0097.vercel.app',
   credentials: true,
-  allowedHeaders: ['Content-Type', 'X-Requested-With', 'X-HTTP-Method-Override', 'Accept']
+  allowedHeaders: ['Content-Type', 'X-Requested-With', 'X-HTTP-Method-Override', 'Accept', 'Cloudfront-forwarded-proto']
 }));
 
 app.options("*", cors());
