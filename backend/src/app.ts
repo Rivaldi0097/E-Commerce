@@ -21,10 +21,12 @@ var whitelist = [
   'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app'
 ]
 
+app.set("trust proxy", 1);
+
 app.use(cors({
   origin: process.env.ENVIRONMENT === 'development' ? 'http://localhost:3000' : 'https://e-commerce-frontend-rivaldi0097.vercel.app',
   credentials: true,
-  allowedHeaders: ['Content-Type', 'X-Requested-With', 'X-HTTP-Method-Override', 'Accept', 'Cloudfront-forwarded-proto']
+  allowedHeaders: ['Content-Type', 'X-Requested-With', 'X-HTTP-Method-Override', 'Accept', 'Cloudfront-forwarded-proto', 'Origin', 'Authorization', 'Set-Cookie', 'Cookie']
 }));
 
 app.options("*", cors());
@@ -33,18 +35,15 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
-// app.set("trust proxy", 1);
 app.use(session({
   secret: env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   name: 'LootSessionCookie',
-  proxy: true,
   cookie: {
     // domain: 'http://localhost:3000',
     sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'none',
     secure: process.env.ENVIRONMENT === 'development' ? false : true,
-    httpOnly: false,
     maxAge: 60 * 60 * 1000
   },
   // rolling: true,
