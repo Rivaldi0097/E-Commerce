@@ -21,10 +21,10 @@ var whitelist = [
   'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app'
 ]
 
-app.set("trust proxy", 1);
+app.set("trust proxy", 1)
 
 app.use(cors({
-  origin: process.env.ENVIRONMENT === 'development' ? 'http://localhost:3000' : 'https://e-commerce-frontend-rivaldi0097.vercel.app',
+  origin: process.env.ENVIRONMENT === 'development' ? 'http://localhost:3000' : ['https://e-commerce-frontend-rivaldi0097.vercel.app', 'https://e-commerce-frontend-chi-fawn.vercel.app', 'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app/'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'X-Requested-With', 'X-HTTP-Method-Override', 'Accept', 'Cloudfront-forwarded-proto', 'Origin', 'Authorization', 'Set-Cookie', 'Cookie']
 }));
@@ -47,7 +47,7 @@ app.use(session({
     httpOnly: process.env.ENVIRONMENT === 'development' ? false : true,
     maxAge: 60 * 60 * 1000
   },
-  // rolling: true,
+  rolling: true,
   store: MongoStore.create({
     mongoUrl: env.MONGO_CONNECTION_STRING
   })
