@@ -14,6 +14,7 @@ const userSchema = new Schema({
     state: { type: String, required: true, select: false },
     zip: { type: Number, required: true, select: false },
   },
+  sessionId: {type: String, required: false}
 });
 
 type User = InferSchemaType<typeof userSchema>;

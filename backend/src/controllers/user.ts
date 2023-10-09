@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import UserModel from "../models/user";
 import TokenModel from "../models/token";
+import SessionModel from "../models/session";
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
 
@@ -8,17 +9,19 @@ var crypto = require("crypto");
 var sendEmail = require("../util/sendEmail");
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
-  const authenticatedUserId = req.session.userId;
+  // const authenticatedUserId = req.session.userId;
 
   try {
-    if (!authenticatedUserId) {
-      throw createHttpError(401, "User not authenticated");
-    }
+    // if (!authenticatedUserId) {
+    //   throw createHttpError(401, "User not authenticated");
+    // }
 
-    const user = await UserModel.findById(authenticatedUserId)
-      .select("+email")
-      .exec();
-    res.status(200).json(user);
+    const session = await SessionModel.findById(req.headers.authorization).exec();
+
+    // const user = await UserModel.findById(authenticatedUserId)
+    //   .select("+email")
+    //   .exec();
+    res.status(200).json(session);
   } catch (error) {
     next(error);
   }
@@ -148,6 +151,8 @@ export const login: RequestHandler<
     }
 
     req.session.userId = user._id;
+    
+    user.sessionId = req.session.id;
     
     res.status(201).json(user);
 

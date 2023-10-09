@@ -100,7 +100,7 @@ export const updateCart: RequestHandler<
                 path: "products.product",
                 select: ["title", "price", "image"],
               });
-            console.log(increaseQty);
+            
             res.status(200).json(increaseQty);
           }
         }
@@ -124,7 +124,7 @@ export const updateCart: RequestHandler<
             path: "products.product",
             select: ["title", "price", "image"],
           });
-        console.log(addProduct);
+        
         res.status(200).json(addProduct);
       }
     } else {
@@ -153,7 +153,7 @@ export const updateCart: RequestHandler<
                   path: "products.product",
                   select: ["title", "price", "image"],
                 });
-              console.log(removeProduct);
+              
               res.status(200).json(removeProduct);
             }
             // DECREASE PRODUCT QUANTITY IN CART
@@ -177,7 +177,7 @@ export const updateCart: RequestHandler<
                   path: "products.product",
                   select: ["title", "price", "image"],
                 });
-              console.log(decreaseQty);
+              
               res.status(200).json(decreaseQty);
             }
           }
@@ -208,7 +208,7 @@ export const getCartContent: RequestHandler<
       })
       .exec();
 
-    console.log(cartContent);
+    
 
     if (!cartContent) {
       throw createHttpError(404, "User does not have cart associated");
@@ -259,7 +259,7 @@ export const removeProductInCart: RequestHandler<
         path: "products.product",
         select: ["title", "price", "image"],
       });
-    console.log(removeProduct);
+    
     res.status(200).json(removeProduct);
   } catch (error) {
     next(error);
@@ -293,7 +293,7 @@ export const removeAllProductsInCart: RequestHandler<
         path: "products.product",
         select: ["title", "price", "image"],
       });
-    console.log(removeProduct);
+    
     res.status(200).json(removeProduct);
   } catch (error) {
     next(error);
@@ -312,7 +312,7 @@ export const removeCart: RequestHandler<
 > = async (req, res, next) => {
   try {
     const cart = await CartModel.deleteOne({ user: req.params.userId });
-    console.log(cart);
+    
     res.status(200).json("Successfully deleted cart for user");
   } catch (error) {
     next(error);
