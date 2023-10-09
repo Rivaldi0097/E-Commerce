@@ -220,7 +220,7 @@ export const getCartContent: RequestHandler<
   }
 };
 
-interface RemoveProductInCart {
+interface RemoveProductInCartParams {
   cartId: string;
 }
 
@@ -229,7 +229,7 @@ interface RemoveProductInCart {
 }
 
 export const removeProductInCart: RequestHandler<
-  RemoveProductInCart,
+  RemoveProductInCartParams,
   unknown,
   RemoveProductInCart,
   unknown
@@ -248,6 +248,40 @@ export const removeProductInCart: RequestHandler<
           products: {
             product: productId,
           },
+        },
+      },
+      {
+        returnDocument: "after",
+      }
+    )
+      .populate({ path: "user", select: "username" })
+      .populate({
+        path: "products.product",
+        select: ["title", "price", "image"],
+      });
+    console.log(removeProduct);
+    res.status(200).json(removeProduct);
+  } catch (error) {
+    next(error);
+  }
+};
+
+interface RemoveAllProductsInCartParams {
+  userId: string;
+}
+
+export const removeAllProductsInCart: RequestHandler<
+  RemoveAllProductsInCartParams,
+  unknown,
+  unknown,
+  unknown
+> = async (req, res, next) => {
+  try {
+    const removeProduct = await CartModel.findOneAndUpdate(
+      { user: req.params.userId },
+      {
+        $set: {
+          products: [],
         },
       },
       {
