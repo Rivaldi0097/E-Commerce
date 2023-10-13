@@ -10,7 +10,7 @@ var crypto = require("crypto");
 var sendEmail = require("../util/sendEmail");
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
-
+  console.log(req.headers)
   console.log("sessionId from frontend: ", req.headers.authorization)
 
   try {
