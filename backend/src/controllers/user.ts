@@ -11,9 +11,13 @@ var sendEmail = require("../util/sendEmail");
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
 
-  try {
+  console.log("sessionId from frontend: ", req.headers.authorization)
 
+  try {
+    
     const session = await SessionModel.findById(req.headers.authorization).exec();
+
+    console.log("session returned value: ", session)
 
     res.status(200).json(session);
 
