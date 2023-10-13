@@ -5,9 +5,11 @@ const router = express.Router();
 
 router.get("/", UserController.getAuthenticatedUser);
 
-router.get("/:username", UserController.getUser);
+router.get("/:userId", UserController.getUser);
 
 router.post("/", UserController.createUser);
+
+router.patch("/updateUser", UserController.updateUser);
 
 router.post("/login", UserController.login);
 

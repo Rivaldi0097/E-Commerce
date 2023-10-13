@@ -14,6 +14,7 @@ const userSchema = new Schema({
     state: { type: String, required: true, select: false },
     zip: { type: Number, required: true, select: false },
   },
+  //only used in login when sending back the user variable
   sessionId: {type: String, required: false}
 });
 

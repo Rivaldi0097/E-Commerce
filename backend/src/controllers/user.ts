@@ -4,34 +4,31 @@ import TokenModel from "../models/token";
 import SessionModel from "../models/session";
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
+import user from "../models/user";
 
 var crypto = require("crypto");
 var sendEmail = require("../util/sendEmail");
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
-  // const authenticatedUserId = req.session.userId;
 
   try {
-    // if (!authenticatedUserId) {
-    //   throw createHttpError(401, "User not authenticated");
-    // }
 
     const session = await SessionModel.findById(req.headers.authorization).exec();
 
-    // const user = await UserModel.findById(authenticatedUserId)
-    //   .select("+email")
-    //   .exec();
     res.status(200).json(session);
+
   } catch (error) {
     next(error);
   }
 };
 
 export const getUser: RequestHandler = async (req, res, next) => {
-  const username = req.params.username;
+  const userId = req.params.userId;
 
   try {
-    const user = await UserModel.find({ username: username }).exec();
+    const user = await UserModel.findById(userId)
+                .select("firstName lastName username email phoneNum address")
+                .exec();
     res.status(200).json(user);
   } catch (error) {
     next(error);
@@ -116,6 +113,58 @@ export const createUser: RequestHandler<
     next(error);
   }
 };
+
+interface UpdateUser{
+  userId: string,
+  updated:{
+    firstName: string,
+    lastName: string,
+    password: string,
+    phoneNum: number,
+    address:{
+      street: string,
+      city: string,
+      state: string,
+      zip: number
+    }
+  }
+}
+
+export const updateUser: RequestHandler<unknown, unknown, UpdateUser, unknown> = async (req, res, next) => {
+
+    const userId = req.body.userId;
+    const updatedUser = req.body.updated;
+    console.log(userId)
+    console.log(updatedUser)
+
+    try {
+
+        if(!userId){
+            throw createHttpError(400, "Missing UserId")
+        }
+        
+        const missingValues = []
+
+        for(let key in updatedUser){
+            if(!updatedUser[key as keyof typeof updatedUser]){
+                missingValues.push(key)
+            }
+        }
+
+        if(missingValues.length > 0){
+            throw createHttpError(400, `Missing ${(missingValues.map((e) => e)).join(',')}`)
+        }
+
+        const update = await UserModel.findOneAndUpdate({_id: userId}, updatedUser, {new: true}).select("firstName lastName username email phoneNum address")
+
+
+        res.status(200).json(update)
+
+    } catch (error) {
+        next(error)
+    }
+
+}
 
 interface LoginBody {
   username?: string;

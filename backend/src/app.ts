@@ -44,7 +44,7 @@ app.use(session({
     // domain: 'http://localhost:3000',
     sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'none',
     secure: process.env.ENVIRONMENT === 'development' ? false : true,
-    httpOnly: process.env.ENVIRONMENT === 'development' ? false : true,
+    // httpOnly: process.env.ENVIRONMENT === 'development' ? false : true,
     maxAge: 60 * 60 * 1000
   },
   rolling: true,
