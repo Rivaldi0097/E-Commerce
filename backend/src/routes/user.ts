@@ -3,7 +3,7 @@ import * as UserController from "../controllers/user";
 
 const router = express.Router();
 
-router.get("/", UserController.getAuthenticatedUser);
+router.post("/authentication", UserController.getAuthenticatedUser);
 
 router.get("/:userId", UserController.getUser);
 

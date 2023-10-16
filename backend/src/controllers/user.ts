@@ -4,18 +4,17 @@ import TokenModel from "../models/token";
 import SessionModel from "../models/session";
 import bcrypt from "bcrypt";
 import createHttpError from "http-errors";
-import user from "../models/user";
 
 var crypto = require("crypto");
 var sendEmail = require("../util/sendEmail");
 
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
-  console.log(req.headers)
-  console.log("sessionId from frontend: ", req.headers.authorization)
+
+  const sessionId = req.body.sessionId;
 
   try {
     
-    const session = await SessionModel.findById(req.headers.authorization).exec();
+    const session = await SessionModel.findById(sessionId).exec();
 
     console.log("session returned value: ", session)
 
