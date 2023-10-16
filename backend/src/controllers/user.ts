@@ -16,8 +16,6 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     
     const session = await SessionModel.findById(sessionId).exec();
 
-    console.log("session returned value: ", session)
-
     res.status(200).json(session);
 
   } catch (error) {
