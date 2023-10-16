@@ -43,6 +43,7 @@ app.use(session({
   name: 'LootSessionCookie',
   cookie: {
     // domain: 'http://localhost:3000',
+    path:'/',
     sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'none',
     secure: process.env.ENVIRONMENT === 'development' ? false : true,
     // httpOnly: process.env.ENVIRONMENT === 'development' ? false : true,
