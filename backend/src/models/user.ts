@@ -15,7 +15,8 @@ const userSchema = new Schema({
     zip: { type: Number, required: true, select: false },
   },
   //only used in login when sending back the user variable
-  sessionId: {type: String, required: false}
+  sessionId: { type: String, required: false },
+  cartId: { type: Schema.Types.ObjectId, ref: "Cart" },
 });
 
 type User = InferSchemaType<typeof userSchema>;
