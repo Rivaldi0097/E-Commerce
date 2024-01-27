@@ -14,7 +14,13 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
     const session = await SessionModel.findById(sessionId).exec();
 
-    res.status(200).json(session);
+    console.log(session);
+
+    if (session !== null) {
+      res.status(200).json(session);
+    } else {
+      throw createHttpError(400, "Session not found");
+    }
   } catch (error) {
     next(error);
   }
