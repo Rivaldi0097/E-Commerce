@@ -16,19 +16,38 @@ const cors = require("cors");
 const app = express();
 
 var whitelist = [
-  'http://localhost:3000', 
-  'https://e-commerce-frontend-rivaldi0097.vercel.app', 
-  'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app'
-]
+  "http://localhost:3000",
+  "https://e-commerce-frontend-rivaldi0097.vercel.app",
+  "https://e-commerce-frontend-git-main-rivaldi0097.vercel.app",
+];
 
-app.set("trust proxy", 1)
+app.set("trust proxy", 1);
 
-app.use(cors({
-  origin: process.env.ENVIRONMENT === 'development' ? 'http://localhost:3000' : ['https://e-commerce-frontend-rivaldi0097.vercel.app', 'https://e-commerce-frontend-chi-fawn.vercel.app', 'https://e-commerce-frontend-git-main-rivaldi0097.vercel.app'],
-  credentials: true,
-  methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'X-Requested-With', 'X-HTTP-Method-Override', 'Accept', 'Cloudfront-forwarded-proto', 'Origin', 'Authorization', 'Set-Cookie', 'Cookie']
-}));
+app.use(
+  cors({
+    origin:
+      process.env.ENVIRONMENT === "development"
+        ? "http://localhost:3000"
+        : [
+            "https://e-commerce-frontend-rivaldi0097.vercel.app",
+            "https://e-commerce-frontend-chi-fawn.vercel.app",
+            "https://e-commerce-frontend-git-main-rivaldi0097.vercel.app",
+          ],
+    credentials: true,
+    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "X-Requested-With",
+      "X-HTTP-Method-Override",
+      "Accept",
+      "Cloudfront-forwarded-proto",
+      "Origin",
+      "Authorization",
+      "Set-Cookie",
+      "Cookie",
+    ],
+  })
+);
 
 app.options("*", cors());
 
@@ -36,24 +55,26 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
-app.use(session({
-  secret: env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  name: 'LootSessionCookie',
-  cookie: {
-    // domain: 'http://localhost:3000',
-    path:'/',
-    sameSite: process.env.ENVIRONMENT === 'development' ? 'lax' : 'none',
-    secure: process.env.ENVIRONMENT === 'development' ? false : true,
-    // httpOnly: process.env.ENVIRONMENT === 'development' ? false : true,
-    maxAge: 60 * 60 * 1000
-  },
-  rolling: true,
-  store: MongoStore.create({
-    mongoUrl: env.MONGO_CONNECTION_STRING
+app.use(
+  session({
+    secret: env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    name: "LootSessionCookie",
+    cookie: {
+      // domain: 'http://localhost:3000',
+      path: "/",
+      sameSite: process.env.ENVIRONMENT === "development" ? "lax" : "none",
+      secure: process.env.ENVIRONMENT === "development" ? false : true,
+      // httpOnly: process.env.ENVIRONMENT === 'development' ? false : true,
+      maxAge: 60 * 60 * 1000,
+    },
+    rolling: true,
+    store: MongoStore.create({
+      mongoUrl: env.MONGO_CONNECTION_STRING,
+    }),
   })
-}))
+);
 
 app.use("/api/products", productsRoutes);
 app.use("/api/reviews", reviewRoutes);
@@ -77,7 +98,6 @@ app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
     errorMessage = error.message;
   }
   res.status(statusCode).json({ error: errorMessage });
-  
 });
 
 export default app;
