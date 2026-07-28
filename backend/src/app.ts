@@ -32,6 +32,7 @@ app.use(
             "https://e-commerce-frontend-rivaldi0097.vercel.app",
             "https://e-commerce-frontend-chi-fawn.vercel.app",
             "https://e-commerce-frontend-git-main-rivaldi0097.vercel.app",
+            "https://e-commerce-frontend-alpha-jet.vercel.app/"
           ],
     credentials: true,
     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH", "OPTIONS"],
